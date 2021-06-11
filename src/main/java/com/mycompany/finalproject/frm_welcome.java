@@ -5,20 +5,20 @@
  */
 package com.mycompany.finalproject;
 
-import static com.mycompany.finalproject.frm_login.password;
-import static com.mycompany.finalproject.frm_login.user;
+import java.awt.Color;
+import java.awt.Image;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -26,15 +26,21 @@ import javax.swing.SwingUtilities;
  */
 public class frm_welcome extends javax.swing.JFrame {
 
-    ImageIcon imageAnimals = new ImageIcon("dog.png");
-    ImageIcon imagePlants = new ImageIcon("plant.png");
+    ImageIcon imageAnimals = new ImageIcon("dog.png");//I create imageAnimals ImageIcon.
+    ImageIcon imagePlants = new ImageIcon("plant.png");//I create imagePlants ImageIcon.
+    String image;//I took an image variable to take photos
 
     public frm_welcome() {
         initComponents();
-        this.setLocationRelativeTo(null);
-        lbl_animals.setIcon(imageAnimals);
-        lbl_plants.setIcon(imagePlants);
-
+        this.setLocationRelativeTo(null);//I set the form to be in the middle of the page.
+        lbl_animals.setIcon(imageAnimals);//I set the image animal icon to the lbl_animals label.
+        lbl_plants.setIcon(imagePlants);//I set the image plants icon to the lbl_plants label.
+        lbl_pass.setVisible(false);////I used label to notify user with regex.
+        //I made it invisible when user is not logged in to make it visible in case of error or positive feedback 
+        lbl_usern.setVisible(false);
+        lbl_mail.setVisible(false);
+        lbl_telNumber.setVisible(false);
+        lbl_address.setVisible(false);
     }
 
     /**
@@ -74,6 +80,13 @@ public class frm_welcome extends javax.swing.JFrame {
         lbl_image = new javax.swing.JLabel();
         lbl_department = new javax.swing.JLabel();
         txt_department = new javax.swing.JTextField();
+        lbl_pass = new javax.swing.JLabel();
+        lbl_usern = new javax.swing.JLabel();
+        lbl_mail = new javax.swing.JLabel();
+        lbl_telNumber = new javax.swing.JLabel();
+        btn_chooseColor = new javax.swing.JButton();
+        btn_choose = new javax.swing.JButton();
+        lbl_address = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -81,18 +94,19 @@ public class frm_welcome extends javax.swing.JFrame {
                 formWindowOpened(evt);
             }
         });
-        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         tbd_choices.setPreferredSize(new java.awt.Dimension(751, 550));
 
-        pnl_welcome.setBackground(new java.awt.Color(204, 204, 255));
+        pnl_welcome.setBackground(new java.awt.Color(153, 153, 153));
         pnl_welcome.setMinimumSize(new java.awt.Dimension(730, 504));
         pnl_welcome.setPreferredSize(new java.awt.Dimension(730, 504));
 
         lbl_welcome.setFont(new java.awt.Font("Lucida Grande", 3, 18)); // NOI18N
+        lbl_welcome.setForeground(new java.awt.Color(255, 255, 255));
         lbl_welcome.setText("Welcome, which genre's records would you like to view?");
 
         btn_animals.setText("ANİMALS");
+        btn_animals.setSize(new java.awt.Dimension(101, 29));
         btn_animals.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_animalsActionPerformed(evt);
@@ -110,6 +124,10 @@ public class frm_welcome extends javax.swing.JFrame {
             }
         });
 
+        lbl_plants.setMaximumSize(new java.awt.Dimension(77, 16));
+        lbl_plants.setMinimumSize(new java.awt.Dimension(77, 16));
+        lbl_plants.setPreferredSize(new java.awt.Dimension(77, 16));
+
         btn_back.setText("<--");
         btn_back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,61 +140,68 @@ public class frm_welcome extends javax.swing.JFrame {
         pnl_welcomeLayout.setHorizontalGroup(
             pnl_welcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_welcomeLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
                 .addGroup(pnl_welcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_welcomeLayout.createSequentialGroup()
-                        .addGroup(pnl_welcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnl_welcomeLayout.createSequentialGroup()
-                                .addGap(56, 56, 56)
-                                .addComponent(lbl_animals, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnl_welcomeLayout.createSequentialGroup()
-                                .addGap(162, 162, 162)
-                                .addComponent(btn_animals)))
-                        .addGroup(pnl_welcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnl_welcomeLayout.createSequentialGroup()
-                                .addGap(61, 61, 61)
-                                .addComponent(lbl_plants, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnl_welcomeLayout.createSequentialGroup()
-                                .addGap(115, 115, 115)
-                                .addComponent(btn_plants, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(btn_back)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnl_welcomeLayout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addComponent(lbl_welcome, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(89, Short.MAX_VALUE))
+                        .addGap(109, 109, 109)
+                        .addComponent(btn_animals, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_plants, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(162, 162, 162))))
+            .addGroup(pnl_welcomeLayout.createSequentialGroup()
+                .addGap(77, 77, 77)
+                .addComponent(lbl_animals, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(79, 79, 79)
+                .addComponent(lbl_plants, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 82, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_welcomeLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btn_back)
-                .addGap(27, 27, 27))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_welcome, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58))
         );
         pnl_welcomeLayout.setVerticalGroup(
             pnl_welcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_welcomeLayout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(72, 72, 72)
                 .addComponent(lbl_welcome, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addGroup(pnl_welcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btn_plants, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-                    .addComponent(btn_animals, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(29, 29, 29)
+                .addGroup(pnl_welcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_animals)
+                    .addComponent(btn_plants, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addGroup(pnl_welcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_animals, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_plants, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lbl_plants, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_animals, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(btn_back)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addGap(47, 47, 47))
         );
 
         tbd_choices.addTab("CHOİCES", pnl_welcome);
 
-        pnl_user.setBackground(new java.awt.Color(204, 204, 255));
+        pnl_user.setBackground(new java.awt.Color(153, 153, 153));
 
+        lbl_user.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        lbl_user.setForeground(new java.awt.Color(255, 255, 255));
         lbl_user.setText("Username:");
 
+        lbl_password.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        lbl_password.setForeground(new java.awt.Color(255, 255, 255));
         lbl_password.setText("Password:");
 
+        lbl_nameSurname.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        lbl_nameSurname.setForeground(new java.awt.Color(255, 255, 255));
         lbl_nameSurname.setText("Name Surname:");
 
+        lbl_id.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        lbl_id.setForeground(new java.awt.Color(255, 255, 255));
         lbl_id.setText("ID:");
 
+        lbl_email.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        lbl_email.setForeground(new java.awt.Color(255, 255, 255));
         lbl_email.setText("Email:");
 
         btn_update.setText("UPDATE");
@@ -186,37 +211,66 @@ public class frm_welcome extends javax.swing.JFrame {
             }
         });
 
+        lbl_tel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        lbl_tel.setForeground(new java.awt.Color(255, 255, 255));
         lbl_tel.setText("Telephone Number:");
 
+        lbl_adress.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        lbl_adress.setForeground(new java.awt.Color(255, 255, 255));
         lbl_adress.setText("Adress:");
 
         txta_adress.setColumns(20);
         txta_adress.setRows(5);
         jScrollPane1.setViewportView(txta_adress);
 
-        lbl_image.setText("İMAGE");
+        lbl_image.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_image.setText("                  IMAGE AREA");
 
+        lbl_department.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        lbl_department.setForeground(new java.awt.Color(255, 255, 255));
         lbl_department.setText("Department:");
+
+        lbl_pass.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_pass.setText("jLabel1");
+
+        lbl_usern.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_usern.setText("jLabel1");
+
+        lbl_mail.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_mail.setText("jLabel1");
+
+        lbl_telNumber.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_telNumber.setText("jLabel1");
+
+        btn_chooseColor.setText("Choose background color");
+        btn_chooseColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_chooseColorActionPerformed(evt);
+            }
+        });
+
+        btn_choose.setText("Choose Image");
+        btn_choose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_chooseActionPerformed(evt);
+            }
+        });
+
+        lbl_address.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_address.setText("jLabel1");
 
         javax.swing.GroupLayout pnl_userLayout = new javax.swing.GroupLayout(pnl_user);
         pnl_user.setLayout(pnl_userLayout);
         pnl_userLayout.setHorizontalGroup(
             pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_userLayout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
                 .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_userLayout.createSequentialGroup()
+                        .addGap(77, 77, 77)
                         .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnl_userLayout.createSequentialGroup()
-                                .addComponent(lbl_adress)
-                                .addGap(386, 386, 386)
-                                .addComponent(btn_update, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pnl_userLayout.createSequentialGroup()
                                 .addGap(2, 2, 2)
-                                .addComponent(lbl_id)))
-                        .addContainerGap(183, Short.MAX_VALUE))
-                    .addGroup(pnl_userLayout.createSequentialGroup()
-                        .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lbl_id))
                             .addGroup(pnl_userLayout.createSequentialGroup()
                                 .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(pnl_userLayout.createSequentialGroup()
@@ -248,12 +302,38 @@ public class frm_welcome extends javax.swing.JFrame {
                                         .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txt_mail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txt_password, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(132, 132, 132)
-                                .addComponent(lbl_image, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnl_userLayout.createSequentialGroup()
+                                        .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lbl_pass)
+                                            .addComponent(lbl_usern)
+                                            .addComponent(lbl_mail))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                                        .addComponent(lbl_image, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(23, 23, 23))
+                                    .addGroup(pnl_userLayout.createSequentialGroup()
+                                        .addComponent(lbl_telNumber)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btn_choose, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(68, 68, 68))))))
+                    .addGroup(pnl_userLayout.createSequentialGroup()
+                        .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnl_userLayout.createSequentialGroup()
-                                .addGap(131, 131, 131)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(77, 77, 77)
+                                .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_adress)
+                                    .addGroup(pnl_userLayout.createSequentialGroup()
+                                        .addGap(131, 131, 131)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lbl_address))))
+                            .addGroup(pnl_userLayout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addComponent(btn_chooseColor)))
+                        .addGap(19, 19, 19)
+                        .addComponent(btn_update, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(23, 23, 23))
         );
         pnl_userLayout.setVerticalGroup(
             pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,158 +351,306 @@ public class frm_welcome extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_user)
-                            .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_usern))
                         .addGap(18, 18, 18)
                         .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_password)
-                            .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_pass))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_email)
-                            .addComponent(txt_mail, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_mail, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_mail))
                         .addGap(17, 17, 17)
                         .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_department)
                             .addComponent(txt_department, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(19, 19, 19)
+                        .addGap(19, 19, 19))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_userLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbl_image, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_userLayout.createSequentialGroup()
                         .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_tel)
-                            .addComponent(txt_tel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txt_tel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_telNumber))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_adress)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnl_userLayout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(lbl_image, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_update, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_adress)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(141, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_choose)
+                        .addGap(38, 38, 38)
+                        .addComponent(lbl_address)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_update, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                    .addComponent(btn_chooseColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(54, 54, 54))
         );
 
         tbd_choices.addTab("USER", pnl_user);
 
-        getContentPane().add(tbd_choices);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tbd_choices, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tbd_choices, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_animalsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_animalsActionPerformed
-        frm_animals frm = new frm_animals();
-        frm.setLocationRelativeTo(null);
-        frm.setVisible(true);
-        setVisible(false);
+        frm_animals frm = new frm_animals();//I create new frame with new keyword.
+        frm.setLocationRelativeTo(null);//I set the form to be in the middle of the page.
+        frm.setVisible(true);////I set frame visibility.
+        setVisible(false);//frm_welcome is invisible when new form is opened.
     }//GEN-LAST:event_btn_animalsActionPerformed
 
     private void btn_plantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_plantsActionPerformed
-        frm_plants frm = new frm_plants();
-        frm.setLocationRelativeTo(null);
-        frm.setVisible(true);
-        setVisible(false);
+        frm_plants frm = new frm_plants();//I create new frame with new keyword.
+        frm.setLocationRelativeTo(null);//I set the form to be in the middle of the page.
+        frm.setVisible(true);//I set frame visibility.
+        setVisible(false);//frm_welcome is invisible when new form is opened.
     }//GEN-LAST:event_btn_plantsActionPerformed
 
     private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
-        frm_login frm = new frm_login();
-        frm.setLocationRelativeTo(null);
-        frm.setVisible(true);
-        setVisible(false);
+        frm_login frm = new frm_login();//I create new frame with new keyword.
+        frm.setLocationRelativeTo(null);//I set the form to be in the middle of the page.
+        frm.setVisible(true);//I set frame visibility.
+        setVisible(false);//frm_welcome is invisible when new form is opened.
 
     }//GEN-LAST:event_btn_backActionPerformed
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
 
-        Update();
+        if (Control()) {//I called regex function "Control()" here. If function returns true, user can inserted.
+            Update();//It update some informations according to user.
+        }
 
     }//GEN-LAST:event_btn_updateActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 
-        txt_username.setText(frm_login.user);
-        txt_password.setText(frm_login.password);
+        txt_username.setText(frm_login.user);//When form window opened, I set frm_login.user to txt_username. 
+        txt_password.setText(frm_login.password);// I set frm_login.password to  txt_password. 
 
-        GetDataWihtUsername(txt_username.getText(), txt_password.getText());
+        GetDataWihtUsername(txt_username.getText(), txt_password.getText());//I retrieve data with username and password.
 
     }//GEN-LAST:event_formWindowOpened
+
+    private void btn_chooseColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chooseColorActionPerformed
+
+        JColorChooser cc = new JColorChooser();//I create a color chooser object.
+        Color firstcolor = Color.RED;//Sets the first color selected in the dialog window.
+        Color color = cc.showDialog(this, "Choose a color", firstcolor);//opens the color selection window
+        pnl_user.setBackground(color);//I changed background's color.
+
+    }//GEN-LAST:event_btn_chooseColorActionPerformed
+
+    private void btn_chooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chooseActionPerformed
+        JFileChooser fc = new JFileChooser();//I made a new fileChooser.
+        fc.showOpenDialog(null);//I opened my file selection window
+        File file = fc.getSelectedFile();//I assigned the file marked from the file selection window to my file field.
+        image = file.getAbsolutePath();//I retrieve file's path and assign to image.
+
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon(image).getImage().
+                getScaledInstance(lbl_image.getWidth(), lbl_image.getHeight(), Image.SCALE_SMOOTH));//I created an ImageIcon and I called image here.
+        lbl_image.setIcon(imageIcon);//getScaledInstance function scales the image.
+        //I set lbl_image imageIcon.
+    }//GEN-LAST:event_btn_chooseActionPerformed
 
     public void GetDataWihtUsername(String username, String password) {
 
         try {
             Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");
-            Statement stmt = conn.createStatement();
+            //I used this interface because it is used to communicate with the database with all its methods.
+            Statement stmt = conn.createStatement();//I have defined the statement that defines the various methods to send the interface sql commands to the database.
+
             String query = "SELECT * FROM USERS WHERE USERNAME='" + username + "' AND PASSWORD='" + password + "'";
-            ResultSet rs = stmt.executeQuery(query);
+            //I retrieve username and password with Select command.
+            ResultSet rs = stmt.executeQuery(query);//It runs query.
             while (rs.next()) {
 
-                int id = rs.getInt("ID");
-                String nameSurname = rs.getString("NAMESURNAME");
-                String email = rs.getString("EMAIL");
-                String department = rs.getString("DEPARTMENT");
-                String telnumber = rs.getString("TELNUMBER");
-                String adress = rs.getString("ADRESS");
-                String image = rs.getString("IMAGE");
+                int id = rs.getInt("ID");//I retrieve ID from database and I assign it to id.
+                String nameSurname = rs.getString("NAMESURNAME");//I retrieve NAMESURNAME from database and I assign it to nameSurname.
+                String email = rs.getString("EMAIL");//I retrieve EMAIL from database and I assign it to email.
+                String department = rs.getString("DEPARTMENT");//I retrieve DEPARTMENT from database and I assign it to department.
+                String telnumber = rs.getString("TELNUMBER");//I retrieve TELNUMBER from database and I assign it to telnumber.
+                String adress = rs.getString("ADRESS");//I retrieve ADRESS from database and I assign it to adress.
+                image = rs.getString("IMAGE");//I retrieve IMAGE from database and I assign it to image.
 
-                txt_id.setText(id + "");
-                txt_nameSurname.setText(nameSurname);
-                txt_mail.setText(email);
-                txta_adress.setText(adress);
-                txt_department.setText(department);
-                txt_tel.setText(telnumber);
-                lbl_image.setText(image);
+                txt_id.setText(id + "");//I set txt_id to id.
+                txt_nameSurname.setText(nameSurname);//I set txt_nameSurname to nameSurname.
+                txt_mail.setText(email);//I set txt_mail to email.
+                txta_adress.setText(adress);//I set txta_adress to adress.
+                txt_department.setText(department);//I set txt_department to department.
+                txt_tel.setText(telnumber);//I set txt_tel to telnumber.
+
+                ImageIcon imageIcon = new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(lbl_image.getWidth(), lbl_image.getHeight(), Image.SCALE_SMOOTH));
+                lbl_image.setIcon(imageIcon);//I set lbl_image to imageIcon.
 
             }
 
-            conn.close();
+            conn.close();// Database connection closed.
 
         } catch (SQLException e) {
 
-            e.printStackTrace();
+            e.printStackTrace();//I caugth exceptions here.
         }
 
     }
 
-    public boolean Update() {
-
-        boolean rvalue = false;
-        Connection conn = null;
+    public void Update() {
         try {
-            int id = Integer.parseInt(txt_id.getText());
-            String nameSurname = txt_nameSurname.getText();
-            String email = txt_mail.getText();
-            String password = txt_password.getText();
-            String adress = txta_adress.getText();
-            String telnumber = txt_tel.getText();
-            String department = txt_department.getText();
-            String username = txt_username.getText();
-            String image = lbl_image.getText();
+            int id = Integer.parseInt(txt_id.getText());//I retrieve txt_id and assign it to id.
+            String nameSurname = txt_nameSurname.getText();//I retrieve txt_nameSurname and assign it to nameSurname.
+            String email = txt_mail.getText();//I retrieve txt_mail and assign it to email.
+            String password = txt_password.getText();////I retrieve txt_password and assign it to password.
+            String adress = txta_adress.getText();//I retrieve txta_adress and assign it to adress.
+            String telnumber = txt_tel.getText();//I retrieve txt_tel and assign it to telnumber.
+            String department = txt_department.getText();//I retrieve txt_department and assign it to department.
+            String username = txt_username.getText();//I retrieve txt_username and assign it to username.
+            
+             ImageIcon imageIcon = new ImageIcon(new ImageIcon(image).getImage().
+                    getScaledInstance(lbl_image.getWidth(), lbl_image.getHeight(), Image.SCALE_SMOOTH));//I created an ImageIcon and I called image here.
+            lbl_image.setIcon(imageIcon);//getScaledInstance function scales the image.
+            //I set lbl_image imageIcon.
 
-            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");
-            Statement stmt = conn.createStatement();
+            
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");//I wrote url,password and username here.
+            Statement stmt = conn.createStatement();//I have defined the statement that defines the various methods to send the interface sql commands to the database.
             String query = "UPDATE USERS SET NAMESURNAME='" + nameSurname + "', EMAIL='" + email
                     + "', PASSWORD='" + password + "', ADRESS='" + adress + "', USERNAME= '" + username + "', TELNUMBER='"
                     + telnumber + "',IMAGE= '" + image + "' WHERE ID=" + id;
+            //I update some informations with UPDATE command.
+            stmt.executeUpdate(query);//It runs query.
 
-            if (Pattern.matches("[a-zA-Z0-9]{3}", password)) {
-                JOptionPane.showMessageDialog(rootPane, "It's succesfully updated...");
+            conn.close();// Database connection closed.
+         
+            JOptionPane.showMessageDialog(rootPane, "It's updated succesfully...");//If its updated succesfuly I showed this message.
+
+        } catch (SQLException e) {
+          
+            e.printStackTrace();//I caugth exceptions here.
+        }
+
+
+    }
+
+    public boolean Control() {
+        boolean rvalue = true; //I took a rvalue variable.
+        Matcher matcher; //I took matcher variable to match.
+
+        if (txt_password.getText().isEmpty()) {//If txt_password is empty,
+            JOptionPane.showMessageDialog(rootPane, "Password not be empty");//I turned this message.
+
+            rvalue = false;//Its wrong so rvalue returns false.
+
+        } else {
+            matcher = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$").matcher(txt_password.getText());
+            //?= everything in parentheses must come after the match caught. 
+            //.* searches everything in front of it and password should have numbers and digits it should be bigger than 6 character.
+            if (!matcher.find()) {//if matcher couldn't find appropriate text,
+                JOptionPane.showMessageDialog(rootPane, "Password should be like 12345e");//It shows message like that.
+
+                lbl_pass.setText("-");//If it's wrong, I set text '-'
+                lbl_pass.setVisible(true);//Its shows "-"
+                rvalue = false;//Its wrong so rvalue returns false.
             } else {
-                JOptionPane.showMessageDialog(rootPane, "İnvalid Password!,please input valid Password...");
+                lbl_pass.setText("+");//If it's true, I set text '+'.
+                lbl_pass.setVisible(true);//true conditions it shows "+".
+
             }
 
-            stmt.executeUpdate(query);
-            conn.close();
-            rvalue = true;
-
-        } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            if (conn != null && !(conn.isClosed())) {
-                conn.close();
+        if (txt_username.getText().isEmpty()) {//If txt_username is empty,
+            JOptionPane.showMessageDialog(rootPane, "Username mustn't be empty");//I turned this message.
+            rvalue = false;//Its wrong so rvalue returns false.
+
+        } else {
+            matcher = Pattern.compile("^(.*[A-Za-z]{4,})(.*[0-9]{1,}$)").matcher(txt_username.getText());
+            //.* searches everything in front of it
+            //Username should include at least four letter and 1 digit
+            if (!matcher.find()) {//if matcher couldn't find appropriate text,
+                JOptionPane.showMessageDialog(rootPane, "Username should be like efsan34");//It shows message like that.
+                lbl_usern.setText("-");//If it's wrong, I set text '-'
+                lbl_usern.setVisible(true);//Its shows "-"
+                rvalue = false;//Its wrong so rvalue returns false.
+            } else {
+                lbl_usern.setText("+");//If it's true, I set text '+'.
+                lbl_usern.setVisible(true); //true conditions it shows "+".
+
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
-
         }
-        return rvalue;
 
+        if (txt_mail.getText().isEmpty()) {//If txt_email is empty,
+            JOptionPane.showMessageDialog(rootPane, "Email mustn't be empty");//I turned this message.
+            rvalue = false;//Its wrong so rvalue returns false.
+
+        } else {
+            matcher = Pattern.compile("^(.*[\\w][\\w\\d])@(gmail|hotmail)(.com)$").matcher(txt_mail.getText());
+            //Email should include firstly letter than digit and  gmail or hotmail.com
+            if (!matcher.find()) {//if matcher couldn't find appropriate text,
+                JOptionPane.showMessageDialog(rootPane, "Email should be like nurefsan34@gmail.com");//It shows message like that.
+                lbl_mail.setText("-");//If it's wrong, I set text '-'
+                lbl_mail.setVisible(true);//Its shows "-"
+                rvalue = false;//Its wrong so rvalue returns false.
+
+            } else {
+                lbl_mail.setText("+");//If it's true, I set text '+'.
+                lbl_mail.setVisible(true);//true conditions it shows "+".
+
+            }
+        }
+        if (txt_tel.getText().isEmpty()) {//If txt_telnumber is empty,
+            JOptionPane.showMessageDialog(rootPane, "Telephone number mustn't be empty");//I turned this message.
+            rvalue = false;//Its wrong so rvalue returns false.
+        } else {
+            matcher = Pattern.compile("^(\\+[1-9][0-9]?)\\-([0-9]{10})$").matcher(txt_tel.getText());
+            //telephone number should start with '+' and it should be 10 character.
+            if (!matcher.find()) {//if matcher couldn't find appropriate text,
+                JOptionPane.showMessageDialog(rootPane, "Telephone number should be like +90-4565434549");//It shows message like that.
+                lbl_telNumber.setText("-");//If it's wrong, I set text '-'
+                lbl_telNumber.setVisible(true);//Its shows "-"
+                rvalue = false;//Its wrong so rvalue returns false.
+
+            } else {
+                lbl_telNumber.setText("+");//If it's true, I set text '+'.
+                lbl_telNumber.setVisible(true);//true conditions it shows "+".
+
+            }
+        } 
+         if (txta_adress.getText().isEmpty()) {//If txta_adress is empty,
+            JOptionPane.showMessageDialog(rootPane, "Adress mustn't be empty");//I turned this message.
+            rvalue = false;//Its wrong so rvalue returns false.
+        } else {
+            matcher = Pattern.compile("[\\w\\s](\\d)?").matcher(txta_adress.getText());
+              //Adress should be like "Yıldız mahallesi Ankara/Demetevler".
+            if (!matcher.find()) {//if matcher couldn't find appropriate text,
+                JOptionPane.showMessageDialog(rootPane, "Adress should be like Yıldız mahallesi Ankara/Demetevler");//It shows message like that.
+                lbl_address.setText("-");//If it's wrong, I set text '-'
+                lbl_address.setVisible(true);//Its shows "-"
+                rvalue = false;//Its wrong so rvalue returns false.
+
+            } else {
+                lbl_address.setText("+");//If it's true, I set text '+'.
+                lbl_address.setVisible(true);//true conditions it shows "+".
+
+            }
+        } 
+        
+        
+        return rvalue;//In true conditions I turned rvalue.
     }
 
     /**
@@ -463,20 +691,27 @@ public class frm_welcome extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_animals;
     private javax.swing.JButton btn_back;
+    private javax.swing.JButton btn_choose;
+    private javax.swing.JButton btn_chooseColor;
     private javax.swing.JButton btn_plants;
     private javax.swing.JButton btn_update;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbl_address;
     private javax.swing.JLabel lbl_adress;
     private javax.swing.JLabel lbl_animals;
     private javax.swing.JLabel lbl_department;
     private javax.swing.JLabel lbl_email;
     private javax.swing.JLabel lbl_id;
     private javax.swing.JLabel lbl_image;
+    private javax.swing.JLabel lbl_mail;
     private javax.swing.JLabel lbl_nameSurname;
+    private javax.swing.JLabel lbl_pass;
     private javax.swing.JLabel lbl_password;
     private javax.swing.JLabel lbl_plants;
     private javax.swing.JLabel lbl_tel;
+    private javax.swing.JLabel lbl_telNumber;
     private javax.swing.JLabel lbl_user;
+    private javax.swing.JLabel lbl_usern;
     private javax.swing.JLabel lbl_welcome;
     private javax.swing.JPanel pnl_user;
     private javax.swing.JPanel pnl_welcome;

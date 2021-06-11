@@ -5,6 +5,11 @@
  */
 package com.mycompany.finalproject;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,8 +17,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,10 +25,9 @@ import javax.swing.JOptionPane;
  */
 public class frm_login extends javax.swing.JFrame {
 
-    static String user;
-    static String password;
+    static String user;//I took the static variable as it should always be set to its final state
+    static String password;//I took the static variable as it should always be set to its final state
 
-    
     /**
      * Creates new form frm_login
      */
@@ -52,22 +54,26 @@ public class frm_login extends javax.swing.JFrame {
         cb_showPassword = new javax.swing.JCheckBox();
         btn_next = new javax.swing.JButton();
         btn_signOut = new javax.swing.JButton();
+        btn_newRegister = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(500, 377));
 
-        jLabel1.setFont(new java.awt.Font("Plantagenet Cherokee", 1, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Plantagenet Cherokee", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("LOGIN");
 
-        txt_username.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        txt_username.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        txt_username.setForeground(new java.awt.Color(255, 255, 255));
         txt_username.setText("Username:");
 
-        jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Password:");
 
+        cb_showPassword.setForeground(new java.awt.Color(255, 255, 255));
         cb_showPassword.setText("Show Password");
         cb_showPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,11 +83,6 @@ public class frm_login extends javax.swing.JFrame {
 
         btn_next.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         btn_next.setText("NEXT");
-        btn_next.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btn_nextMouseClicked(evt);
-            }
-        });
         btn_next.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_nextActionPerformed(evt);
@@ -96,6 +97,14 @@ public class frm_login extends javax.swing.JFrame {
             }
         });
 
+        btn_newRegister.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        btn_newRegister.setText("REGISTRATION");
+        btn_newRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_newRegisterActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -103,32 +112,34 @@ public class frm_login extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(184, 184, 184)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(113, 113, 113)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(txt_username))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txt_user)
-                            .addComponent(txt_password, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(cb_showPassword)
-                                .addGap(0, 14, Short.MAX_VALUE))
-                            .addComponent(btn_signOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(29, 29, 29))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(txt_username))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txt_user)
+                                    .addComponent(txt_password, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(btn_newRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_signOut, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_next, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cb_showPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(43, 43, 43))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
+                .addGap(95, 95, 95)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_username)
                     .addComponent(txt_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -138,87 +149,103 @@ public class frm_login extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(cb_showPassword)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(btn_next, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_signOut, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_next, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_newRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_signOut, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
+    public void paint(Graphics g) {
+
+        super.paint(g);//I called the function that makes it draw from the super class.
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.white);//I arranged color
+        Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);//I arranged border and thickness
+        g2.setStroke(stroke);//I set the thickness I specified in g2.
+
+        g2.drawRect(380, 140, 40, 40);//I drew the rectangle with the help of this function
+        g2.fillRect(380, 140, 40, 40);//I filled the rectangle with this function
+        g2.drawArc(385, 100, 30, 70, 0, 200);//I drew the arc with this function
+    }
+
     private void btn_nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nextActionPerformed
-       
-        query();
-       
+
+        query();//When I press the next button, I called query.
+
+
     }//GEN-LAST:event_btn_nextActionPerformed
 
     private void cb_showPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_showPasswordActionPerformed
-        txt_password.setEchoChar((char) 0);
+        txt_password.setEchoChar((char) 0);//I made password visible with this function
     }//GEN-LAST:event_cb_showPasswordActionPerformed
 
     private void btn_signOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_signOutActionPerformed
 
-        this.dispose();
+        this.dispose();//This function close the program.
     }//GEN-LAST:event_btn_signOutActionPerformed
 
-    private void btn_nextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_nextMouseClicked
+    private void btn_newRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newRegisterActionPerformed
+        frm_registration frm2 = new frm_registration();//I made another form which called frm_registration with new keyword.
+        frm2.setLocationRelativeTo(null);//I set the form to be in the middle of the page.
+        frm2.setVisible(true);//I set form visibility.
+        setVisible(false);//frm_login is invisible when new form is opened.
+    }//GEN-LAST:event_btn_newRegisterActionPerformed
 
-    }//GEN-LAST:event_btn_nextMouseClicked
     public boolean query() {
 
-        boolean rvalue = false;
-        Connection conn = null;
-         user = txt_user.getText();
-         password = String.valueOf(txt_password.getPassword());
-      
-        ResultSet rs;
+        boolean rvalue = false;//I took a rvalue variable.
+        Connection conn = null;//I used this interface because it is used to communicate with the database with all its methods.
+        user = txt_user.getText();//It takes username's text.
+        password = String.valueOf(txt_password.getPassword());//It takes password's text and turn it to String.
+
+        ResultSet rs;//I defined this to hold data retrieved from database after running SQL query using Statements objects.
         String query = "SELECT * FROM USERS WHERE USERNAME='" + user + "' AND PASSWORD='" + password + "'";
+        //I pulled the username and password from the database with the select command.
 
         try {
 
-            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");
-            Statement stmt = conn.createStatement();
-            rs = stmt.executeQuery(query);
+            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");//I wrote database URL, password and username.
+            Statement stmt = conn.createStatement();//I have defined the statement that defines the various methods to send the interface sql commands to the database.
+            rs = stmt.executeQuery(query);//It runs query.
             if (rs.next()) {
-                
-                frm_welcome frm = new frm_welcome();
-                frm.setLocationRelativeTo(null);
-                frm.setVisible(true);
-                setVisible(false);
-              
-                JOptionPane.showMessageDialog(rootPane, "Login Succesfull...");
+
+                frm_welcome frm = new frm_welcome();//frm_welcome created with new keyword.
+                frm.setLocationRelativeTo(null);//I set the frame to be in the middle of the page.
+                frm.setVisible(true);//I set frame visibility.
+                setVisible(false);//frm_login is invisible when new form is opened.
+
+                JOptionPane.showMessageDialog(rootPane, "Login Succesfull...");//If Login succesful this message showed.
 
             } else {
-                JOptionPane.showMessageDialog(rootPane, "Invalid Login, please try again.");
+                JOptionPane.showMessageDialog(rootPane, "Invalid Login, please try again.");//If Login not succesful this message showed.
+
             }
 
-            conn.close();
-            rvalue = true;
+            conn.close();// Database connection closed.
+            rvalue = true;//If everything true until here, rvalue equals true.
+
         } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            if (conn != null && !(conn.isClosed())) {
-                conn.close();
+           
+           Logger.getLogger(frm_login.class.getName()).log(Level.SEVERE, null, ex);//Catches the error when the connection cannot be established.
+       
+        }try {
+            if (conn != null && !(conn.isClosed())) {//if connection isn't null or closed
+                conn.close();//I closed connection
             }
         } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frm_login.class.getName()).log(Level.SEVERE, null, ex);//Catches the error when the connection cannot be established.
 
         }
-        return rvalue;
+
+        return rvalue;//It returns true;
 
     }
 
@@ -258,6 +285,7 @@ public class frm_login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_newRegister;
     private javax.swing.JButton btn_next;
     private javax.swing.JButton btn_signOut;
     private javax.swing.JCheckBox cb_showPassword;

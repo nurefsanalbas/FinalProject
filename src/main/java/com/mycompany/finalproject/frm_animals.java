@@ -8,9 +8,7 @@ package com.mycompany.finalproject;
 import static com.mycompany.finalproject.frm_login.password;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,7 +32,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class frm_animals extends javax.swing.JFrame {
 
-    DefaultTableModel tbl_animalsModel;
+    DefaultTableModel tbl_animalsModel;//I took my table with DefaultTableModel.
+    DefaultListModel lst_recordsModel;//I took my list with DefaultListModel.
+    ArrayList records;//For adding I used records arraylist.
+
     int id;
     String genus;
     String animalClass;
@@ -44,19 +45,22 @@ public class frm_animals extends javax.swing.JFrame {
     String laborant;
     boolean vertebrate;
     String species;
-    byte[] image;
-    String fileName = null;
-    byte[] personImage = null;
+    String image;
 
     int column = 0;
 
     public frm_animals() {
         initComponents();
 
-        tbl_animalsModel = new DefaultTableModel();
-        tbl_animalsModel.setColumnIdentifiers(new Object[]{"ID", "NAME", "ANIMALCLASS", "GENUS", "SPECIES", "VERTEBRATE", "GENDER", "HABITAT", "LABORANT"});
-        getAnimals();
-        tbl_animals.setModel(tbl_animalsModel);
+        tbl_animalsModel = new DefaultTableModel();//I create my defaultTableModel tbl_animalsModel here.
+        tbl_animalsModel.setColumnIdentifiers(new Object[]{"ID", "NAME", "ANIMALCLASS", "GENUS", "SPECIES", "VERTEBRATE", "GENDER", "HABITAT", "LABORANT", "IMAGE"});
+        //I identified column names.
+        getAnimals();//I called all animals here.
+        tbl_animals.setModel(tbl_animalsModel);//I set the table I created to the tbl_animalsModel table.
+        records = new ArrayList<>();//I created arraylist here.
+
+        lst_recordsModel = new DefaultListModel();//I created a default list  for showing last records.
+        lst_records.setModel(lst_recordsModel);//I set the list I created to the lst_recordsModel list.
 
     }
 
@@ -68,7 +72,6 @@ public class frm_animals extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         pop_up = new javax.swing.JPopupMenu();
@@ -76,6 +79,7 @@ public class frm_animals extends javax.swing.JFrame {
         mitem_close = new javax.swing.JMenuItem();
         seperator = new javax.swing.JPopupMenu.Separator();
         mitem_back = new javax.swing.JMenuItem();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jSplitPane1 = new javax.swing.JSplitPane();
         pnl_registration = new javax.swing.JPanel();
         lbl_heading = new javax.swing.JLabel();
@@ -92,9 +96,6 @@ public class frm_animals extends javax.swing.JFrame {
         txt_habitat = new javax.swing.JTextField();
         lbl_gender = new javax.swing.JLabel();
         btn_update = new javax.swing.JButton();
-        txt_search = new javax.swing.JTextField();
-        btn_search = new javax.swing.JButton();
-        btn_deleteRow = new javax.swing.JButton();
         cb_vertebrate = new javax.swing.JCheckBox();
         lbl_name = new javax.swing.JLabel();
         txt_name = new javax.swing.JTextField();
@@ -102,11 +103,18 @@ public class frm_animals extends javax.swing.JFrame {
         txt_laborantName = new javax.swing.JTextField();
         lbl_species = new javax.swing.JLabel();
         txt_species = new javax.swing.JTextField();
+        btn_image = new javax.swing.JButton();
+        lbl_image = new javax.swing.JLabel();
         pnl_table = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_animals = new javax.swing.JTable();
-        lbl_image = new javax.swing.JLabel();
-        btn_image = new javax.swing.JButton();
+        txt_search = new javax.swing.JTextField();
+        btn_search = new javax.swing.JButton();
+        btn_deleteRow = new javax.swing.JButton();
+        pnl_list = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        lst_records = new javax.swing.JList<>();
+        lbl_records = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menu_file = new javax.swing.JMenu();
         cbx_open = new javax.swing.JCheckBoxMenuItem();
@@ -146,9 +154,8 @@ public class frm_animals extends javax.swing.JFrame {
                 formWindowOpened(evt);
             }
         });
-        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
-        jSplitPane1.setDividerLocation(280);
+        jSplitPane1.setDividerLocation(220);
         jSplitPane1.setDividerSize(20);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
@@ -161,96 +168,26 @@ public class frm_animals extends javax.swing.JFrame {
                 pnl_registrationMouseReleased(evt);
             }
         });
-        pnl_registration.setLayout(new java.awt.GridBagLayout());
 
         lbl_heading.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         lbl_heading.setText("NEW ANİMAL TYPE REGİSTRATİON");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 9;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 69, 0, 0);
-        pnl_registration.add(lbl_heading, gridBagConstraints);
 
         lbl_genus.setText("Genus:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 157;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 14, 0, 0);
-        pnl_registration.add(lbl_genus, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 157;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 110;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 12, 0, 0);
-        pnl_registration.add(txt_genus, gridBagConstraints);
 
         lbl_id.setText("ID:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(35, 13, 0, 0);
-        pnl_registration.add(lbl_id, gridBagConstraints);
 
         spinner_id.setModel(new javax.swing.SpinnerNumberModel(1, 1, 1000, 1));
         spinner_id.setToolTipText("");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(30, 12, 0, 0);
-        pnl_registration.add(spinner_id, gridBagConstraints);
 
         lbl_class.setText("Class:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 42;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 23;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 13, 0, 0);
-        pnl_registration.add(lbl_class, gridBagConstraints);
 
         cbb_class.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fish", "Amphibia", "Reptilia", "Aves", "Mammalia", "Sponges", "Solenters", "Worms", "Arthropods", "Mollusks", "Echinoderms" }));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 32;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.gridheight = 64;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(4, 12, 0, 0);
-        pnl_registration.add(cbb_class, gridBagConstraints);
 
         buttonGroup1.add(rbtn_female);
         rbtn_female.setText("Female");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 10;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(31, 3, 0, 0);
-        pnl_registration.add(rbtn_female, gridBagConstraints);
 
         buttonGroup1.add(rbtn_male);
         rbtn_male.setText("Male");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 10;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridheight = 9;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 0);
-        pnl_registration.add(rbtn_male, gridBagConstraints);
 
         btn_add.setText("ADD");
         btn_add.addActionListener(new java.awt.event.ActionListener() {
@@ -258,43 +195,10 @@ public class frm_animals extends javax.swing.JFrame {
                 btn_addActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 16;
-        gridBagConstraints.gridy = 65;
-        gridBagConstraints.gridwidth = 10;
-        gridBagConstraints.gridheight = 97;
-        gridBagConstraints.ipadx = 10;
-        gridBagConstraints.ipady = 18;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(3, 49, 60, 0);
-        pnl_registration.add(btn_add, gridBagConstraints);
 
         lbl_habitat.setText("Habitat:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 42;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 23;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 42, 0, 0);
-        pnl_registration.add(lbl_habitat, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 10;
-        gridBagConstraints.gridy = 32;
-        gridBagConstraints.gridwidth = 5;
-        gridBagConstraints.gridheight = 34;
-        gridBagConstraints.ipadx = 74;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(3, 12, 0, 0);
-        pnl_registration.add(txt_habitat, gridBagConstraints);
 
         lbl_gender.setText("Gender");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(35, 45, 0, 0);
-        pnl_registration.add(lbl_gender, gridBagConstraints);
 
         btn_update.setText("UPDATE");
         btn_update.setEnabled(false);
@@ -303,124 +207,137 @@ public class frm_animals extends javax.swing.JFrame {
                 btn_updateActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 26;
-        gridBagConstraints.gridy = 65;
-        gridBagConstraints.gridwidth = 31;
-        gridBagConstraints.gridheight = 96;
-        gridBagConstraints.ipadx = 12;
-        gridBagConstraints.ipady = 16;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(4, 6, 0, 0);
-        pnl_registration.add(btn_update, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 36;
-        gridBagConstraints.gridy = 21;
-        gridBagConstraints.gridwidth = 51;
-        gridBagConstraints.gridheight = 12;
-        gridBagConstraints.ipadx = 159;
-        gridBagConstraints.ipady = 12;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 0);
-        pnl_registration.add(txt_search, gridBagConstraints);
-
-        btn_search.setText("SEARCH");
-        btn_search.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_searchActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 16;
-        gridBagConstraints.gridy = 21;
-        gridBagConstraints.gridwidth = 11;
-        gridBagConstraints.gridheight = 22;
-        gridBagConstraints.ipady = 9;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(7, 49, 0, 0);
-        pnl_registration.add(btn_search, gridBagConstraints);
-
-        btn_deleteRow.setText("DELETE A ROW");
-        btn_deleteRow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_deleteRowActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 86;
-        gridBagConstraints.gridy = 95;
-        gridBagConstraints.gridwidth = 82;
-        gridBagConstraints.gridheight = 65;
-        gridBagConstraints.ipadx = 16;
-        gridBagConstraints.ipady = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 6, 0, 19);
-        pnl_registration.add(btn_deleteRow, gridBagConstraints);
 
         cb_vertebrate.setText("Is It Vertebrate?");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 21;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.gridheight = 11;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 42, 0, 0);
-        pnl_registration.add(cb_vertebrate, gridBagConstraints);
 
         lbl_name.setText("Name:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 21;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 13, 0, 0);
-        pnl_registration.add(lbl_name, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 13;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 10;
-        gridBagConstraints.ipadx = 89;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(2, 12, 0, 0);
-        pnl_registration.add(txt_name, gridBagConstraints);
 
         lbl_laborantName.setText("Laborant:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 16;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 21;
-        gridBagConstraints.gridheight = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 49, 0, 0);
-        pnl_registration.add(lbl_laborantName, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 56;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 81;
-        gridBagConstraints.gridheight = 8;
-        gridBagConstraints.ipadx = 136;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(46, 6, 0, 0);
-        pnl_registration.add(txt_laborantName, gridBagConstraints);
 
         lbl_species.setText("Species:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 157;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(11, 41, 0, 0);
-        pnl_registration.add(lbl_species, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 10;
-        gridBagConstraints.gridy = 157;
-        gridBagConstraints.gridwidth = 6;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 110;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 12, 0, 0);
-        pnl_registration.add(txt_species, gridBagConstraints);
+
+        btn_image.setText("CHOOSE");
+        btn_image.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_imageActionPerformed(evt);
+            }
+        });
+
+        lbl_image.setBackground(new java.awt.Color(255, 0, 0));
+        lbl_image.setText("      IMAGE AREA");
+
+        javax.swing.GroupLayout pnl_registrationLayout = new javax.swing.GroupLayout(pnl_registration);
+        pnl_registration.setLayout(pnl_registrationLayout);
+        pnl_registrationLayout.setHorizontalGroup(
+            pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_registrationLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_name, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbl_id, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbl_habitat, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_name, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(spinner_id, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                    .addComponent(txt_habitat, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_registrationLayout.createSequentialGroup()
+                        .addComponent(lbl_species)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_species, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE))
+                    .addGroup(pnl_registrationLayout.createSequentialGroup()
+                        .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_class)
+                            .addComponent(lbl_genus))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnl_registrationLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(txt_genus))
+                            .addComponent(cbb_class, 0, 1, Short.MAX_VALUE))))
+                .addGap(18, 18, 18)
+                .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_registrationLayout.createSequentialGroup()
+                        .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_laborantName)
+                            .addComponent(lbl_gender))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rbtn_male)
+                            .addComponent(rbtn_female)
+                            .addComponent(txt_laborantName, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(cb_vertebrate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbl_image, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btn_add, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_update, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(btn_image))
+                .addGap(23, 23, 23))
+            .addGroup(pnl_registrationLayout.createSequentialGroup()
+                .addGap(309, 309, 309)
+                .addComponent(lbl_heading)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnl_registrationLayout.setVerticalGroup(
+            pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_registrationLayout.createSequentialGroup()
+                .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_registrationLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(lbl_heading)
+                        .addGap(26, 26, 26)
+                        .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(spinner_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_id)
+                            .addComponent(lbl_class)
+                            .addComponent(cbb_class, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_laborantName)
+                            .addComponent(txt_laborantName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnl_registrationLayout.createSequentialGroup()
+                                .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnl_registrationLayout.createSequentialGroup()
+                                        .addGap(16, 16, 16)
+                                        .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lbl_name)
+                                            .addComponent(lbl_genus, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(pnl_registrationLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(txt_genus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lbl_gender))))
+                                .addGap(18, 18, 18)
+                                .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_habitat)
+                                    .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(txt_habitat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lbl_species)
+                                        .addComponent(txt_species, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(pnl_registrationLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(rbtn_female)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rbtn_male)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cb_vertebrate))))
+                    .addGroup(pnl_registrationLayout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addGroup(pnl_registrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_image, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnl_registrationLayout.createSequentialGroup()
+                                .addComponent(btn_image)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btn_add)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btn_update)))))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
 
         jSplitPane1.setTopComponent(pnl_registration);
 
@@ -449,12 +366,17 @@ public class frm_animals extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_animals);
 
-        lbl_image.setBackground(new java.awt.Color(255, 255, 255));
-
-        btn_image.setText("CHOOSE");
-        btn_image.addActionListener(new java.awt.event.ActionListener() {
+        btn_search.setText("SEARCH");
+        btn_search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_imageActionPerformed(evt);
+                btn_searchActionPerformed(evt);
+            }
+        });
+
+        btn_deleteRow.setText("DELETE ");
+        btn_deleteRow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteRowActionPerformed(evt);
             }
         });
 
@@ -462,33 +384,69 @@ public class frm_animals extends javax.swing.JFrame {
         pnl_table.setLayout(pnl_tableLayout);
         pnl_tableLayout.setHorizontalGroup(
             pnl_tableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_tableLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(pnl_tableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_tableLayout.createSequentialGroup()
+                .addContainerGap(90, Short.MAX_VALUE)
+                .addGroup(pnl_tableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(pnl_tableLayout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(btn_image))
-                    .addGroup(pnl_tableLayout.createSequentialGroup()
+                        .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbl_image)))
-                .addGap(0, 38, Short.MAX_VALUE))
+                        .addComponent(btn_search)
+                        .addGap(27, 27, 27)
+                        .addComponent(btn_deleteRow, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_tableLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(84, 84, 84))))
         );
         pnl_tableLayout.setVerticalGroup(
             pnl_tableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_tableLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(pnl_tableLayout.createSequentialGroup()
-                .addGap(255, 255, 255)
-                .addComponent(lbl_image)
+                .addGap(46, 46, 46)
+                .addGroup(pnl_tableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_search, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_deleteRow))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_image, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(pnl_table);
 
-        getContentPane().add(jSplitPane1);
+        jTabbedPane1.addTab("Registration", jSplitPane1);
+
+        pnl_list.setBackground(new java.awt.Color(0, 181, 248));
+
+        jScrollPane2.setViewportView(lst_records);
+
+        lbl_records.setFont(new java.awt.Font("Oriya MN", 1, 24)); // NOI18N
+        lbl_records.setText("Latest Records");
+
+        javax.swing.GroupLayout pnl_listLayout = new javax.swing.GroupLayout(pnl_list);
+        pnl_list.setLayout(pnl_listLayout);
+        pnl_listLayout.setHorizontalGroup(
+            pnl_listLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_listLayout.createSequentialGroup()
+                .addContainerGap(186, Short.MAX_VALUE)
+                .addGroup(pnl_listLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_listLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(152, 152, 152))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_listLayout.createSequentialGroup()
+                        .addComponent(lbl_records, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(303, 303, 303))))
+        );
+        pnl_listLayout.setVerticalGroup(
+            pnl_listLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_listLayout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addComponent(lbl_records, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(405, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Records", pnl_list);
 
         jMenuBar1.setEnabled(false);
 
@@ -519,95 +477,103 @@ public class frm_animals extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 909, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 966, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        txt_laborantName.setText(frm_login.user);
+        txt_laborantName.setText(frm_login.user);//when form window opened I set laborant name login user.
     }//GEN-LAST:event_formWindowOpened
 
     private void btn_imageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imageActionPerformed
-        //        JFileChooser fileChooser = new JFileChooser();
-        //        fileChooser.showOpenDialog(null);
-        //        File f = fileChooser.getSelectedFile();
-        //        fileName = f.getAbsolutePath();
-        //
-        //        ImageIcon imageIcon = new ImageIcon(new ImageIcon(fileName).getImage().getScaledInstance(lbl_image.getWidth(), lbl_image.getHeight(), Image.SCALE_SMOOTH));
-        //
-        //        lbl_image.setIcon(imageIcon);
-        //
-        //        try {
-        //            File image = new File(fileName);
-        //            FileInputStream fis = new FileInputStream(image);
-        //            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        //            byte[] buf = new byte[1024];
-        //            for (int readNum; (readNum = fis.read(buf)) != -1;) {
-        //                baos.write(buf, 0, readNum);
-        //            }
-        //            personImage = baos.toByteArray();
-        //        } catch (Exception ex) {
-        //            JOptionPane.showMessageDialog(null, ex);
-        //
-        //        }
+        JFileChooser fileChooser = new JFileChooser();//I made a new fileChooser.
+        fileChooser.showOpenDialog(null);//I opened my file selection window
+        File f = fileChooser.getSelectedFile();//I assigned the file marked from the file selection window to my file field.
+        image = f.getAbsolutePath();//I retrieve file's path and assign to image.
+
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(lbl_image.getWidth(), lbl_image.getHeight(), Image.SCALE_SMOOTH));
+        //I created an ImageIcon and I called image here.
+        lbl_image.setIcon(imageIcon);//I set lbl_image imageIcon.
+
     }//GEN-LAST:event_btn_imageActionPerformed
 
     private void tbl_animalsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_animalsMouseClicked
-        if (SwingUtilities.isRightMouseButton(evt)) {
-            if (tbl_animals.getSelectedRow() > -1) {
-                int row = tbl_animals.getSelectedRow();
-                int id = (int) tbl_animalsModel.getValueAt(row, 0);
+        if (SwingUtilities.isRightMouseButton(evt)) {//I called mouse button event
+            if (tbl_animals.getSelectedRow() > -1) {//İf I select a row in the table it should be like 0,1,2,3
+                int row = tbl_animals.getSelectedRow();//I assign selectedrow to row.
+                int id = (int) tbl_animalsModel.getValueAt(row, 0);//I assign selected row's id to id.
 
-                GetDataWihtId(id);
-                btn_update.setEnabled(true);
+                GetDataWihtId(id);//I called the function that pulls the information in the table to the top
+                btn_update.setEnabled(true);//Update button enabled before updating
             }
         }
     }//GEN-LAST:event_tbl_animalsMouseClicked
 
     private void btn_deleteRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteRowActionPerformed
-        int row = tbl_animals.getSelectedRow();
-        int id = (int) tbl_animals.getValueAt(row, column);
-        Delete(id);
-        getAnimals();
+        int row = tbl_animals.getSelectedRow();//I assign selectedrow to row.
+        int id = (int) tbl_animals.getValueAt(row, column);//I assigned selected value to id.
+        DeleteAnimal(id);//I called delete function
+        getAnimals();//I showed animals after deleting.
     }//GEN-LAST:event_btn_deleteRowActionPerformed
 
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
 
-        Search(txt_search.getText());
+        Search(txt_search.getText());//According to text it searchs.
     }//GEN-LAST:event_btn_searchActionPerformed
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
-        Update();
-        btn_update.setEnabled(false);
-        getAnimals();
+        Update();//I called update function here.
+        btn_update.setEnabled(false);//when user finished update, btn_update be accesible.
+        getAnimals();//I called animals here.
 
     }//GEN-LAST:event_btn_updateActionPerformed
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-        id = (int) spinner_id.getValue();
-        name = txt_name.getText();
-        animalClass = cbb_class.getSelectedItem().toString();
-        genus = txt_genus.getText();
-        species = txt_species.getText();
+        id = (int) spinner_id.getValue();//I retrieved spinner_id and assigned it to id.
+        name = txt_name.getText();//I retrieved txt_name and assigned it to name.
+        animalClass = cbb_class.getSelectedItem().toString();//I retrieved cbb_class and assigned it to animalClass.
+        genus = txt_genus.getText();//I retrieved  txt_genus and assigned it to genus.
+        species = txt_species.getText();//I retrieved txt_species and assigned it to species.
+
         if (cb_vertebrate.isSelected()) {
-            vertebrate = true;
+            vertebrate = true;//I retrieved checkbox data like that.
         } else {
             vertebrate = false;
         }
 
         if (rbtn_female.isSelected()) {
-            gender = "Female";
+            gender = "Female";//I retrieved radiobutton data like that.
         } else {
             gender = "Male";
         }
-        habitat = txt_habitat.getText();
+        habitat = txt_habitat.getText();//I retrieved txt_habitat and assigned it to habitat.
 
-        laborant = txt_laborantName.getText();
+        laborant = txt_laborantName.getText();//I retrieved txt_laborantName and assigned it to laborant.
 
-        insertAnimal(id, name, animalClass, genus, species, vertebrate, gender, habitat, laborant);
-        getAnimals();
+        insertAnimal(id, name, animalClass, genus, species, vertebrate, gender, habitat, laborant, image);
+        //I called insert function with values thats above.
+        records.add(txt_name.getText() + " " + "added.");//I added the name of the last added record to the records list 
+        lst_recordsModel.removeAllElements();//I clear the list
+        for (Object object : records) {
+            lst_recordsModel.addElement(object);//I added object.
+        }
+        getAnimals();//I called all animals here.
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void cbx_openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx_openActionPerformed
+        //For open checkbox on menu bar,I create new form here.
         frm_animals frm = new frm_animals();
         frm.setLocationRelativeTo(null);
         frm.setVisible(true);
@@ -615,31 +581,35 @@ public class frm_animals extends javax.swing.JFrame {
     }//GEN-LAST:event_cbx_openActionPerformed
 
     private void cbx_closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx_closeActionPerformed
-
+        //when user want to exit I showed a confirmDialog here.
         int value = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to close?", "Warning!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (value == JOptionPane.YES_OPTION) {
 
-            this.dispose();
+            this.dispose();//when user click yes, application closed.
+
         } else {
-            this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//when user click no, nothing happen.
 
         }
 
     }//GEN-LAST:event_cbx_closeActionPerformed
 
     private void pnl_registrationMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnl_registrationMousePressed
-        if (SwingUtilities.isRightMouseButton(evt)) {
-            showPopUp(evt);
+        //For popUp menu I write this codes.
+        if (SwingUtilities.isRightMouseButton(evt)) {// if mouse pressed 
+            showPopUp(evt);//function called.
         }
     }//GEN-LAST:event_pnl_registrationMousePressed
 
     private void pnl_registrationMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnl_registrationMouseReleased
-        if (SwingUtilities.isRightMouseButton(evt)) {
-            showPopUp(evt);
+        //For popUp menu I write this codes.
+        if (SwingUtilities.isRightMouseButton(evt)) {// if mouse released 
+            showPopUp(evt);//function called.
         }
     }//GEN-LAST:event_pnl_registrationMouseReleased
 
     private void mitem_openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitem_openActionPerformed
+        //Popup menu item create new form here.
         frm_animals frm = new frm_animals();
         frm.setLocationRelativeTo(null);
         frm.setVisible(true);
@@ -647,6 +617,7 @@ public class frm_animals extends javax.swing.JFrame {
     }//GEN-LAST:event_mitem_openActionPerformed
 
     private void mitem_closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitem_closeActionPerformed
+        //Popup menu item close shows a confirmDialog here.
         int value = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to close?", "Warning!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (value == JOptionPane.YES_OPTION) {
 
@@ -658,6 +629,7 @@ public class frm_animals extends javax.swing.JFrame {
     }//GEN-LAST:event_mitem_closeActionPerformed
 
     private void mitem_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitem_backActionPerformed
+        //Popup menu item back, turn to welcome frame here.
         frm_welcome frm = new frm_welcome();
         frm.setLocationRelativeTo(null);
         frm.setVisible(true);
@@ -665,199 +637,235 @@ public class frm_animals extends javax.swing.JFrame {
     }//GEN-LAST:event_mitem_backActionPerformed
 
     public boolean Search(String text) {
-        tbl_animalsModel.setRowCount(0);//tabloyu sıfırlar.
-        boolean rvalue = false;
-        Connection conn = null;
+        tbl_animalsModel.setRowCount(0);//I clear table.
+        boolean rvalue = false;//I took a rvalue variable.
+        Connection conn = null;//I used this interface because it is used to communicate with the database with all its methods.
 
         try {
-            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");
+            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");//I wrote database URL, password and username.
             Statement stmt = conn.createStatement();
+            //I have defined the statement that defines the various methods to send the interface sql commands to the database.
             String query = "SELECT * FROM TBL_ANIMALS WHERE NAME LIKE '%" + text + "%'";
-            ResultSet rs = stmt.executeQuery(query);
+            //If user input included by any thing in the table, SELECT command show them.
+            ResultSet rs = stmt.executeQuery(query);//It runs query.
             while (rs.next()) {
 
-                id = rs.getInt("ID");
-                name = rs.getString("NAME");
-                animalClass = rs.getString("ANIMALCLASS");
-                genus = rs.getString("GENUS");
-                species = rs.getString("SPECIES");
-                vertebrate = rs.getBoolean("VERTEBRATE");
-                gender = rs.getString("GENDER");
-                habitat = rs.getString("HABITAT");
-                laborant = rs.getString("LABORANT");
+                id = rs.getInt("ID");//I retrieved id from ID.
+                name = rs.getString("NAME");//I retrieved name from NAME.
+                animalClass = rs.getString("ANIMALCLASS");//I retrieved animalClass from ANIMALCLASS.
+                genus = rs.getString("GENUS");//I retrieved genus from GENUS.
+                species = rs.getString("SPECIES");//I retrieved species from SPECIES.
+                vertebrate = rs.getBoolean("VERTEBRATE");//I retrieved vertebrate from VERTEBRATE.
+                gender = rs.getString("GENDER");//I retrieved gender from GENDER.
+                habitat = rs.getString("HABITAT");//I retrieved habitat from HABITAT.
+                laborant = rs.getString("LABORANT");//I retrieved laborant from LABORANT.
+                image = rs.getString("IMAGE");//I retrieved image from IMAGE.
 
-                tbl_animalsModel.addRow(new Object[]{id, name, animalClass, genus, species, vertebrate, gender, habitat, laborant});
+                //It adds a row and show results.
+                tbl_animalsModel.addRow(new Object[]{id, name, animalClass, genus, species, vertebrate, gender, habitat, laborant, image});
             }
 
-            conn.close();
-            rvalue = true;
+            conn.close();// Database connection closed.
+            rvalue = true;//If everything true until here, rvalue equals true.  
 
         } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
+
+            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);//Catches the error when the connection cannot be established.
+
         }
         try {
-            if (conn != null && !(conn.isClosed())) {
-                conn.close();
+            if (conn != null && !(conn.isClosed())) {//if connection isn't null or closed
+                conn.close();//we closed connection
             }
         } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);//Catches the error when the connection cannot be established.
 
         }
-        return rvalue;
+
+        return rvalue;//It returns true;
 
     }
 
-    public boolean Delete(int id) {
+    public boolean DeleteAnimal(int id) {
 
-        tbl_animalsModel.setRowCount(0);
-        boolean rvalue = false;
-        Connection conn = null;
+       
+        boolean rvalue = false;//I took a rvalue variable.
+        Connection conn = null;//I used this interface because it is used to communicate with the database with all its methods.
 
         try {
-            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");
-            Statement stmt = conn.createStatement();
-            String query = "DELETE FROM TBL_ANIMALS WHERE ID=" + id;
-            stmt.executeUpdate(query);
+            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");//I wrote URL,password and username.
+            Statement stmt = conn.createStatement();//I have defined the statement that defines the various methods to send the interface sql commands to the database.
 
-            conn.close();
-            rvalue = true;
+            String query = "DELETE FROM TBL_ANIMALS WHERE ID=" + id;//It deletes according to id with Delete command.
+            stmt.executeUpdate(query);//It runs query.
+
+            conn.close();// Database connection closed.
+            rvalue = true;//If everything true until here, rvalue equals true.  
 
         } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
+
+            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);//Catches the error when the connection cannot be established.
+
         }
         try {
-            if (conn != null && !(conn.isClosed())) {
-                conn.close();
+            if (conn != null && !(conn.isClosed())) {//if connection isn't null or closed
+                conn.close();//I closed connection
             }
         } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);//Catches the error when the connection cannot be established.
 
         }
-        return rvalue;
+
+        return rvalue;//It returns true;
+
     }
 
-    public boolean insertAnimal(int id, String name, String animalClass, String genus, String species, Boolean verberate, String gender, String habitat, String laborant) {
+    public boolean insertAnimal(int id, String name, String animalClass, String genus, String species, Boolean verberate, String gender, String habitat, String laborant, String image) {
 
-        boolean rvalue = false;
-        Connection conn = null;
+        boolean rvalue = false;//I took a rvalue variable.
+        Connection conn = null;//I used this interface because it is used to communicate with the database with all its methods.
+
         try {
 
-            Statement stmt = null;
+            Statement stmt = null;//I have defined the statement that defines the various methods to send the interface sql commands to the database.
             conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");
+            //I wrote URL,password and username.
             stmt = conn.createStatement();
+            String query = "INSERT INTO TBL_ANIMALS VALUES(" + id + ",'" + name + "','" + animalClass + "','" + genus + "','" + species + "'," + verberate + ",'" + gender + "','" + habitat + "','" + laborant + "','" + image + "')";
+            //It insert values in the parameter to TBL_ANIMALS with INSERT command.
+            stmt.executeUpdate(query);//It runs query.
 
-            String query = "INSERT INTO TBL_ANIMALS VALUES(" + id + ",'" + name + "','" + animalClass + "','" + genus + "','" + species + "'," + verberate + ",'" + gender + "','" + habitat + "','" + laborant + "')";
+            conn.close();// Database connection closed.
+            rvalue = true;//If everything true until here, rvalue equals true.  
 
-            stmt.executeUpdate(query);
-
-            conn.close();
-            rvalue = true;
         } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
+
+            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);//Catches the error when the connection cannot be established.
+
         }
         try {
-            if (conn != null && !(conn.isClosed())) {
-                conn.close();
+            if (conn != null && !(conn.isClosed())) {//if connection isn't null or closed
+                conn.close();//I closed connection
             }
         } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);//Catches the error when the connection cannot be established.
 
         }
-        return rvalue;
+
+        return rvalue;//It returns true;
 
     }
 
     public boolean getAnimals() {
-        tbl_animalsModel.setRowCount(0);
-        boolean rvalue = false;
-        Connection conn = null;
+        tbl_animalsModel.setRowCount(0);//I clear table.
+        boolean rvalue = false;//I took a rvalue variable.
+        Connection conn = null;//I used this interface because it is used to communicate with the database with all its methods.
 
         try {
-            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");
-            Statement stmt = conn.createStatement();
+            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");//I wrote URL,password and username.
+            Statement stmt = conn.createStatement();//I have defined the statement that defines the various methods to send the interface sql commands to the database.
             String query = "SELECT * FROM TBL_ANIMALS ORDER BY ID DESC";
-            ResultSet rs = stmt.executeQuery(query);
+            //It select animals and list them.
+            ResultSet rs = stmt.executeQuery(query);//It runs query.
             while (rs.next()) {
 
-                id = rs.getInt("ID");
-                name = rs.getString("NAME");
-                animalClass = rs.getString("ANIMALCLASS");
-                genus = rs.getString("GENUS");
-                species = rs.getString("SPECIES");
-                vertebrate = rs.getBoolean("VERTEBRATE");
-                gender = rs.getString("GENDER");
-                habitat = rs.getString("HABITAT");
-                laborant = rs.getString("LABORANT");
-
-                tbl_animalsModel.addRow(new Object[]{id, name, animalClass, genus, species, vertebrate, gender, habitat, laborant});
+                id = rs.getInt("ID");//I retrieved id from ID.
+                name = rs.getString("NAME");//I retrieved name from NAME.
+                animalClass = rs.getString("ANIMALCLASS");//I retrieved animalClass from ANIMALCLASS.
+                genus = rs.getString("GENUS");//I retrieved genus from GENUS.
+                species = rs.getString("SPECIES");//I retrieved species from SPECIES.
+                vertebrate = rs.getBoolean("VERTEBRATE");//I retrieved vertebrate from VERTEBRATE.
+                gender = rs.getString("GENDER");//I retrieved gender from GENDER.
+                habitat = rs.getString("HABITAT");//I retrieved habitat from HABITAT.
+                laborant = rs.getString("LABORANT");//I retrieved laborant from LABORANT.
+                image = rs.getString("IMAGE");//I retrieved image from IMAGE.
+                //It adds a row and show results.
+                tbl_animalsModel.addRow(new Object[]{id, name, animalClass, genus, species, vertebrate, gender, habitat, laborant, image});
 
             }
-
-            conn.close();
-            rvalue = true;
+            conn.close();// Database connection closed.
+            rvalue = true;//If everything true until here, rvalue equals true.  
 
         } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
+
+            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);//Catches the error when the connection cannot be established.
+
         }
         try {
-            if (conn != null && !(conn.isClosed())) {
-                conn.close();
+            if (conn != null && !(conn.isClosed())) {//if connection isn't null or closed
+                conn.close();//I closed connection
             }
         } catch (SQLException ex) {
-            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frm_animals.class.getName()).log(Level.SEVERE, null, ex);//Catches the error when the connection cannot be established.
 
         }
-        return rvalue;
+
+        return rvalue;//It returns true;
+
     }
 
     public void Update() {
         try {
-            id = (int) spinner_id.getValue();
-            name = txt_name.getText();
-            animalClass = cbb_class.getSelectedItem().toString();
-            genus = txt_genus.getText();
-            species = txt_species.getText();
+            id = (int) spinner_id.getValue();//I retrieved spinner_id value and assigned to id.
+            name = txt_name.getText();//I retrieved txt_name and assigned to name.
+            animalClass = cbb_class.getSelectedItem().toString();//I retrieved cbb_class selected item and assigned to animalClass.
+            genus = txt_genus.getText();//I retrieved txt_genus and assigned to genus.
+            species = txt_species.getText();//I retrieved txt_species and assigned to species.
+
+            ImageIcon imageIcon = new ImageIcon(new ImageIcon(image)
+                    .getImage()
+                    .getScaledInstance(lbl_image.getWidth(),
+                            lbl_image.getHeight(), Image.SCALE_SMOOTH));
+            //I created an ImageIcon and I called image here.
+            lbl_image.setIcon(imageIcon);//I set lbl_image imageIcon.
+
             if (cb_vertebrate.isSelected()) {
-                vertebrate = true;
+                vertebrate = true;//I retrieved checkbox data like that.
             } else {
                 vertebrate = false;
             }
 
-            if (rbtn_female.isSelected()) {
+            if (rbtn_female.isSelected()) {//I retrieved radiobutton data like that.
                 gender = "female";
             } else {
                 gender = "male";
             }
-            habitat = txt_habitat.getText();
 
-            laborant = txt_laborantName.getText();
+            habitat = txt_habitat.getText();//I retrieved txt_habitat and assigned to habitat.
+
+            laborant = txt_laborantName.getText();//I retrieved txt_laborantName and assigned to laborant.
 
             Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");
-            Statement stmt = conn.createStatement();
+            //I wrote URL,password and username.
+            Statement stmt = conn.createStatement();//I have defined the statement that defines the various methods to send the interface sql commands to the database.
+
             String query = "UPDATE TBL_ANIMALS SET NAME='" + name + "', GENDER='" + gender
                     + "', ANIMALCLASS='" + animalClass + "', GENUS='" + genus + "', SPECIES='" + species + "', VERTEBRATE="
-                    + vertebrate + ",HABITAT='" + habitat + "',LABORANT='" + laborant + "'WHERE id=" + id;
-            stmt.executeUpdate(query);
-            conn.close();
+                    + vertebrate + ",HABITAT='" + habitat + "',LABORANT='" + laborant + "',IMAGE='" + image + "' WHERE id=" + id;
+            //I update some informations about animal with UPDATE command.
+            stmt.executeUpdate(query);//It runs query.
+            conn.close();//I closed connection
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+            e.printStackTrace();//I caugth exceptions here.
         }
 
     }
 
     public void GetDataWihtId(int id) {
 
-        tbl_animalsModel.setRowCount(0);
+        tbl_animalsModel.setRowCount(0);//I clear table.
+
         try {
 
-            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");
-            Statement stmt = conn.createStatement();
-            String query = "SELECT * FROM TBL_ANIMALS WHERE id=" + id;
-            ResultSet rs = stmt.executeQuery(query);
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ANIMALS", "APP", "as");//I wrote URL,password and username.
+            Statement stmt = conn.createStatement();//Again I defined statement here.
+            String query = "SELECT * FROM TBL_ANIMALS WHERE id=" + id;//I select animals according to their id.
+            ResultSet rs = stmt.executeQuery(query);//It runs query.
             while (rs.next()) {
 
+                //I take all values from database and I assigned them some variables.
                 name = rs.getString("NAME");
                 animalClass = rs.getString("ANIMALCLASS");
                 genus = rs.getString("GENUS");
@@ -866,15 +874,19 @@ public class frm_animals extends javax.swing.JFrame {
                 gender = rs.getString("GENDER");
                 habitat = rs.getString("HABITAT");
                 laborant = rs.getString("LABORANT");
-
+                image = rs.getString("IMAGE");
+                //I set text fields according to variables in above.
                 spinner_id.setValue(id);
                 txt_name.setText(name);
                 txt_genus.setText(genus);
                 txt_habitat.setText(habitat);
                 txt_laborantName.setText(laborant);
                 txt_species.setText(species);
+                ImageIcon imageIcon = new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(lbl_image.getWidth(), lbl_image.getHeight(), Image.SCALE_SMOOTH));
 
-                if (rbtn_female.isSelected()) {
+                lbl_image.setIcon(imageIcon);
+
+                if (rbtn_female.isSelected()) {//I set radiobutton like that.
                     gender = "Female";
 
                 } else {
@@ -882,12 +894,13 @@ public class frm_animals extends javax.swing.JFrame {
 
                 }
 
-                if (vertebrate == false) {
-                    cb_vertebrate.setEnabled(false);
+                if (cb_vertebrate.isSelected()) {//I set checkbox like that.
+                    vertebrate = true;
                 } else {
-                    cb_vertebrate.setEnabled(true);
+                    vertebrate = false;
                 }
-                switch (animalClass) {
+
+                switch (animalClass) { //I set animalClass like that because it's a combobox.
 
                     case "Fish":
                         cbb_class.setSelectedIndex(0);
@@ -926,18 +939,18 @@ public class frm_animals extends javax.swing.JFrame {
                 }
 
             }
-            conn.close();
+            conn.close();//I closed connection.
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+            e.printStackTrace();//I caught exceptions here.
         }
     }
 
-    private void showPopUp(MouseEvent evt) {
+    private void showPopUp(MouseEvent evt) {//for showing popup menu I wrote this function.
 
         if (evt.isPopupTrigger()) {
-            pop_up.show(evt.getComponent(), evt.getX(), evt.getY());
+            pop_up.show(evt.getComponent(), evt.getX(), evt.getY());//It shows popup menu by coordinates.
         }
 
     }
@@ -990,7 +1003,9 @@ public class frm_animals extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem cbx_open;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lbl_class;
     private javax.swing.JLabel lbl_gender;
     private javax.swing.JLabel lbl_genus;
@@ -1000,12 +1015,15 @@ public class frm_animals extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_image;
     private javax.swing.JLabel lbl_laborantName;
     private javax.swing.JLabel lbl_name;
+    private javax.swing.JLabel lbl_records;
     private javax.swing.JLabel lbl_species;
+    private javax.swing.JList<String> lst_records;
     private javax.swing.JMenu menu_close;
     private javax.swing.JMenu menu_file;
     private javax.swing.JMenuItem mitem_back;
     private javax.swing.JMenuItem mitem_close;
     private javax.swing.JMenuItem mitem_open;
+    private javax.swing.JPanel pnl_list;
     private javax.swing.JPanel pnl_registration;
     private javax.swing.JPanel pnl_table;
     private javax.swing.JPopupMenu pop_up;
